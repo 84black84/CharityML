@@ -15,3 +15,6 @@ data = pd.read_csv("census.csv")
 
 # Success - Display the first record
 display(data.head(n=1))
+
+# Total number of records
+n_records = len(data.index)
