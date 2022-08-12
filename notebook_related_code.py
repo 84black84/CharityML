@@ -65,7 +65,7 @@ display(features_log_minmax_transform.head(n = 5))
 # One-hot encode the 'features_log_minmax_transform' data using pandas.get_dummies()
 features_final = pd.get_dummies(features_log_minmax_transform)
 
-# TODO: Encode the 'income_raw' data to numerical values
+# Encode the 'income_raw' data to numerical values
 income = income_raw.replace({'>50K' : 1, '<=50K' : 0})
 
 # Print the number of features after one-hot encoding
