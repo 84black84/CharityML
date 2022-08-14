@@ -85,10 +85,11 @@ X_train, X_test, y_train, y_test = train_test_split(features_final, income, test
 print("Training set has {} samples.".format(X_train.shape[0]))
 print("Testing set has {} samples.".format(X_test.shape[0]))
 
-TP = np.sum(income) # adding all the rows is enough since all the rows with '0' value is ignored 
-FP = income.count() - TP # all the rows minus the ones they have '0' value
+TP = np.sum(income) # adding all the rows is enough since all the rows with '0' value are ignored 
+FP = len(income) - TP # Specific to the naive case - so all the rows with '0'value, on other words all the rows minus the ones they have '1' value
 TN = 0
 FN = 0
+
 # Calculate accuracy, precision and recall
 accuracy = TP / n_records
 # [True Positives/(True Positives + False Negatives)]
@@ -96,7 +97,8 @@ recall = TP / (TP + FN)
 # [True Positives/(True Positives + False Positives)]
 precision = TP / (TP + FP)
 # Calculate F-score using the formula above for beta = 0.5 and correct values for precision and recall.
-fscore = None
+beta = 0.5
+fscore = (1 + beta**2) * (precision * recall / (beta**2 * precision + recall))
 
 # Print the results 
 print("Naive Predictor: [Accuracy score: {:.4f}, F-score: {:.4f}]".format(accuracy, fscore))
