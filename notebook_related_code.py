@@ -1,3 +1,9 @@
+    """
+        This code incluses only the source code needed for answering the questions inside the notebook and 
+        helped during the development phase.
+        It can be ignored during the review process.
+    """
+
 # Import libraries necessary for this project
 import numpy as np
 import pandas as pd
