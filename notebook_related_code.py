@@ -73,7 +73,7 @@ encoded = list(features_final.columns)
 print("{} total features after one-hot encoding.".format(len(encoded)))
 
 # Uncomment the following line to see the encoded feature names
-print(encoded)
+# print(encoded)
 
 # Import train_test_split
 from sklearn.model_selection import train_test_split
@@ -183,3 +183,40 @@ for clf in [clf_A, clf_B, clf_C]:
 
 # Run metrics visualization for the three supervised learning models chosen
 vs.evaluate(results, accuracy, fscore)
+
+# Import 'GridSearchCV', 'make_scorer', and any other necessary libraries
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import make_scorer
+
+# Initialize the classifier
+clf = GradientBoostingClassifier(random_state = 0)
+
+# Create the parameters list you wish to tune, using a dictionary if needed.
+# HINT: parameters = {'parameter_1': [value1, value2], 'parameter_2': [value1, value2]}
+parameters = {'max_depth' : [1, 2, 3, 4, 5, 6],  'n_estimators' : [4,5,6, 8], 'learning_rate' : [0.6, 0.7, 0.8, 0.9, 1.0]}
+
+# parameters = {'max_depth' : [1, 2, 3, 4, 5, 6],  'n_estimators' : [300, 400, 500], 'learning_rate' : [0.6, 0.8, 1.0]}
+
+# Make an fbeta_score scoring object using make_scorer()
+scorer = make_scorer(fbeta_score, beta = 0.5)
+
+# Perform grid search on the classifier using 'scorer' as the scoring method using GridSearchCV()
+grid_obj = GridSearchCV(clf, parameters, scoring=scorer)
+
+# Fit the grid search object to the training data and find the optimal parameters using fit()
+grid_fit = grid_obj.fit(X_train, y_train)
+
+# Get the estimator
+best_clf = grid_fit.best_estimator_
+
+# Make predictions using the unoptimized and model
+predictions = (clf.fit(X_train, y_train)).predict(X_test)
+best_predictions = best_clf.predict(X_test)
+
+# Report the before-and-afterscores
+print("Unoptimized model\n------")
+print("Accuracy score on testing data: {:.4f}".format(accuracy_score(y_test, predictions)))
+print("F-score on testing data: {:.4f}".format(fbeta_score(y_test, predictions, beta = 0.5)))
+print("\nOptimized Model\n------")
+print("Final accuracy score on the testing data: {:.4f}".format(accuracy_score(y_test, best_predictions)))
+print("Final F-score on the testing data: {:.4f}".format(fbeta_score(y_test, best_predictions, beta = 0.5)))
