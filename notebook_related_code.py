@@ -1,8 +1,8 @@
-    """
-        This code incluses only the source code needed for answering the questions inside the notebook and 
-        helped during the development phase.
-        It can be ignored during the review process.
-    """
+"""
+    This code incluses only the source code needed for answering the questions inside the notebook and         
+    helped during the development phase.
+    It can be ignored during the review process.
+"""
 
 # Import libraries necessary for this project
 import numpy as np
@@ -32,7 +32,7 @@ n_greater_50k = len(data.loc[data['income'].eq(">50K")])
 n_at_most_50k = len(data.loc[data['income'].eq("<=50K")])
 
 # Percentage of individuals whose income is more than $50,000
-greater_percent = n_greater_50k/n_records
+greater_percent = (n_greater_50k * 100.0)/n_records
 
 # Print the results
 print("Total number of records: {}".format(n_records))
@@ -85,7 +85,7 @@ print("{} total features after one-hot encoding.".format(len(encoded)))
 from sklearn.model_selection import train_test_split
 
 # Split the 'features' and 'income' data into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(features_final, income, test_size = 0.2, random_state = 0)
+X_train, X_test, y_train, y_test = train_test_split(features_final, income, stratify = income, test_size = 0.2, random_state = 42)
 
 # Show the results of the split
 print("Training set has {} samples.".format(X_train.shape[0]))
@@ -126,7 +126,7 @@ def train_predict(learner, sample_size, X_train, y_train, X_test, y_test):
     
     # TODO: Fit the learner to the training data using slicing with 'sample_size' using .fit(training_features[:], training_labels[:])
     start = time() # Get start time
-    learner = learner.fit(X_train[:], y_train[:])
+    learner = learner.fit(X_train[:sample_size], y_train[:sample_size])
     end = time() # Get end time
     
     # TODO: Calculate the training time
@@ -166,9 +166,9 @@ from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import AdaBoostClassifier
 
 # Initialize the three models
-clf_A = LogisticRegression(random_state = 0, max_iter=1000)
-clf_B = GradientBoostingClassifier(random_state = 0)
-clf_C = AdaBoostClassifier(random_state = 0)
+clf_A = LogisticRegression(random_state = 42)
+clf_B = GradientBoostingClassifier(random_state = 42)
+clf_C = AdaBoostClassifier(random_state = 42)
 
 # Calculate the number of samples for 1%, 10%, and 100% of the training data
 # HINT: samples_100 is the entire training set i.e. len(y_train)
@@ -195,7 +195,7 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
 
 # Initialize the classifier
-clf = GradientBoostingClassifier(random_state = 0)
+clf = GradientBoostingClassifier(random_state = 42)
 
 # Create the parameters list you wish to tune, using a dictionary if needed.
 # HINT: parameters = {'parameter_1': [value1, value2], 'parameter_2': [value1, value2]}
